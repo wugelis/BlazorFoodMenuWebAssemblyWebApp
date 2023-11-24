@@ -1,0 +1,51 @@
+﻿@page "/picturecardserver"
+@using BlazorWebAssemblyWebApp5.Client.Shared
+@inject HttpClient httpClient
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="row">
+
+                @if (foodSenseResponses == null)
+                {
+                    <p><em>Loading...</em></p>
+                }
+                else
+                {
+                    @foreach (var imgSrc in foodSenseResponses)
+                    {
+                        <TestImageCardServer ImageSource="@imgSrc.Uri" FoodName="@imgSrc.FoodName" Price="@imgSrc.Price"></TestImageCardServer>
+                    }
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    private FoodSenseResponse[]? foodSenseResponses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+
+        foodSenseResponses = await httpClient.GetFromJsonAsync<FoodSenseResponse[]>("sample-data/pictures-data.json");
+    }
+
+    public class FoodSenseResponse
+    {
+        public string ImgName { get; set; }
+        public string Uri { get; set; }
+        public string FoodName { get; set; }
+        public string Price { get; set; }
+        public string Description { get; set; }
+    }
+}

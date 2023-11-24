@@ -4,9 +4,16 @@ using BlazorWebAssemblyWebApp5.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddScoped(sp => {
+    var client = new HttpClient();
+    client.BaseAddress = new Uri("https://localhost:7049");
+    return client;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +34,7 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Counter).Assembly);
 

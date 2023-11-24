@@ -1,0 +1,65 @@
+﻿
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail">
+
+        <LoadingContainer State="@state">
+            <None>
+                <div class="image-container">
+                </div>
+            </None>
+            <Loading>
+                <div class="image-container">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
+            </Loading>
+            <Loaded>
+                <div class="image-container">
+                    <img src="@ImageSource" class="img-fluid" />
+                </div>
+                <div class="caption">
+                    <h4 class="pull-right">@Price</h4>
+                    <h4>
+                        <a href="#">@FoodName</a>
+                    </h4>
+                    <p>See more snippets like this online store item at <a target="_blank" href="https://foodsense.is/">Food Sense - https://foodsense.is/</a>.</p>
+                </div>
+            </Loaded>
+        </LoadingContainer>
+
+
+        <div class="ratings">
+            <p>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>
+            </p>
+        </div>
+    </div>
+</div>
+
+@code {
+
+
+    [Parameter] public string ImageSource { get; set; }
+    [Parameter] public string FoodName { get; set; }
+    [Parameter] public string Price { get; set; }
+
+    PageLoadingState state;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        state = PageLoadingState.None;
+
+        state = PageLoadingState.Loading;
+
+        state = PageLoadingState.Loaded;
+
+        await Task.Delay(1000);
+    }
+
+}
